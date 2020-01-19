@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2016, 2018, 2019 Yaroslav Pronin <proninyaroslav@mail.ru>
+ * Copyright (C) 2016, 2018-2020 Yaroslav Pronin <proninyaroslav@mail.ru>
+ *                                Simon Zajdela <simon.zajdela.a4c@gmail.com>
  *
  * This file is part of LibreTorrent.
  *
@@ -40,6 +41,7 @@ import org.proninyaroslav.libretorrent.ui.settings.sections.ProxySettingsFragmen
 import org.proninyaroslav.libretorrent.ui.settings.sections.SchedulingSettingsFragment;
 import org.proninyaroslav.libretorrent.ui.settings.sections.StorageSettingsFragment;
 import org.proninyaroslav.libretorrent.ui.settings.sections.StreamingSettingsFragment;
+import org.proninyaroslav.libretorrent.ui.settings.sections.WebUiSettingsFragment;
 
 public class PreferenceActivity extends AppCompatActivity
 {
@@ -116,6 +118,8 @@ public class PreferenceActivity extends AppCompatActivity
                 return (F)FeedSettingsFragment.newInstance();
             else if (fragment.equals(StreamingSettingsFragment.class.getSimpleName()))
                 return (F)StreamingSettingsFragment.newInstance();
+            else if (fragment.equals(WebUiSettingsFragment.class.getSimpleName()))
+                return (F)WebUiSettingsFragment.newInstance();
             else
                 return null;
         }

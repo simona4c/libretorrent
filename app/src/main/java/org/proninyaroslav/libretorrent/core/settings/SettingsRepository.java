@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2019 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
+ * Copyright (C) 2019,2020 Yaroslav Pronin <proninyaroslav@mail.ru>
+ *                         Simon Zajdela <simon.zajdela.a4c@gmail.com>
  * This file is part of LibreTorrent.
  *
  * LibreTorrent is free software: you can redistribute it and/or modify
@@ -358,4 +358,20 @@ public interface SettingsRepository
     int streamingPort();
 
     void streamingPort(int val);
+
+    /*
+     * Web UI settings
+     */
+
+    boolean enableWebUi();
+
+    void enableWebUi(boolean val);
+
+    String webUiHostname();
+
+    void webUiHostname(String val);
+
+    int webUiPort();
+
+    void webUiPort(int val);
 }

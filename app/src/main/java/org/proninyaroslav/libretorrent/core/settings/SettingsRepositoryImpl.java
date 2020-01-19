@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2019 Yaroslav Pronin <proninyaroslav@mail.ru>
+ * Copyright (C) 2019, 2020 Yaroslav Pronin <proninyaroslav@mail.ru>
+ *                          Simon Zajdela <simon.zajdela.a4c@gmail.com>
  *
  * This file is part of LibreTorrent.
  *
@@ -144,6 +145,10 @@ public class SettingsRepositoryImpl implements SettingsRepository
         static final boolean enableStreaming = true;
         static final String streamingHostname = "127.0.0.1";
         static final int streamingPort = 8800;
+        /* WebUi settings*/
+        static final boolean enableWebUi = false;
+        static final String webUiHostname = "127.0.0.1";
+        static final int webUiPort = 8055;
     }
 
     private Context appContext;
@@ -1307,6 +1312,51 @@ public class SettingsRepositoryImpl implements SettingsRepository
     {
         pref.edit()
                 .putInt(appContext.getString(R.string.pref_key_streaming_port), val)
+                .apply();
+    }
+
+    @Override
+    public boolean enableWebUi()
+    {
+        return pref.getBoolean(appContext.getString(R.string.pref_key_webui_enable),
+                Default.enableWebUi);
+    }
+
+    @Override
+    public void enableWebUi(boolean val)
+    {
+        pref.edit()
+                .putBoolean(appContext.getString(R.string.pref_key_webui_enable), val)
+                .apply();
+    }
+
+    @Override
+    public String webUiHostname()
+    {
+        return pref.getString(appContext.getString(R.string.pref_key_webui_hostname),
+                Default.webUiHostname);
+    }
+
+    @Override
+    public void webUiHostname(String val)
+    {
+        pref.edit()
+                .putString(appContext.getString(R.string.pref_key_webui_hostname), val)
+                .apply();
+    }
+
+    @Override
+    public int webUiPort()
+    {
+        return pref.getInt(appContext.getString(R.string.pref_key_webui_port),
+                Default.webUiPort);
+    }
+
+    @Override
+    public void webUiPort(int val)
+    {
+        pref.edit()
+                .putInt(appContext.getString(R.string.pref_key_webui_port), val)
                 .apply();
     }
 }

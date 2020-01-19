@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2016, 2018, 2019 Yaroslav Pronin <proninyaroslav@mail.ru>
+ * Copyright (C) 2016, 2018-2020 Yaroslav Pronin <proninyaroslav@mail.ru>
+ *                                Simon Zajdela <simon.zajdela.a4c@gmail.com>
  *
  * This file is part of LibreTorrent.
  *
@@ -42,6 +43,7 @@ import org.proninyaroslav.libretorrent.ui.settings.sections.NetworkSettingsFragm
 import org.proninyaroslav.libretorrent.ui.settings.sections.SchedulingSettingsFragment;
 import org.proninyaroslav.libretorrent.ui.settings.sections.StorageSettingsFragment;
 import org.proninyaroslav.libretorrent.ui.settings.sections.StreamingSettingsFragment;
+import org.proninyaroslav.libretorrent.ui.settings.sections.WebUiSettingsFragment;
 
 public class SettingsFragment extends PreferenceFragmentCompat
 {
@@ -56,6 +58,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
     private static final String SchedulingSettings = "SchedulingSettingsFragment";
     private static final String FeedSettings = "FeedSettingsFragment";
     private static final String StreamingSettings = "StreamingSettingsFragment";
+    private static final String WebUiSettings = "WebUiSettingsFragment";
 
     private AppCompatActivity activity;
     private SettingsViewModel viewModel;
@@ -127,6 +130,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
         Preference streaming = findPreference(StreamingSettingsFragment.class.getSimpleName());
         if (streaming != null)
             streaming.setOnPreferenceClickListener(prefClickListener);
+
+        Preference webUi = findPreference(WebUiSettingsFragment.class.getSimpleName());
+        if (webUi != null)
+            webUi.setOnPreferenceClickListener(prefClickListener);
     }
 
     private Preference.OnPreferenceClickListener prefClickListener = (preference) -> {
@@ -209,6 +216,12 @@ public class SettingsFragment extends PreferenceFragmentCompat
                             getString(R.string.pref_header_streaming));
                 }
                 break;
+            case WebUiSettings:
+                if (Utils.isLargeScreenDevice(activity)) {
+                    setFragment(WebUiSettingsFragment.newInstance(), getString(R.string.pref_header_web_ui));
+                } else {
+                    startActivity(WebUiSettingsFragment.class,  getString(R.string.pref_header_web_ui));
+                }
         }
     }
 

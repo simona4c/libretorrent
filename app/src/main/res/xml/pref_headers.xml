@@ -40,4 +40,9 @@
         android:key="StreamingSettingsFragment"
         android:title="@string/pref_header_streaming"
         android:persistent="false" />
+
+    <Preference
+        android:key="WebUiSettingsFragment"
+        android:title="@string/pref_header_web_ui"
+        android:persistent="false" />
 </PreferenceScreen>

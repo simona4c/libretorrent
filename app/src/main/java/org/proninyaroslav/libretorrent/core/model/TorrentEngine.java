@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2019 Yaroslav Pronin <proninyaroslav@mail.ru>
+ * Copyright (C) 2019, 2020 Yaroslav Pronin <proninyaroslav@mail.ru>
+ *                          Simon Zajdela <simon.zajdela.a4c@gmail.com>
  *
  * This file is part of LibreTorrent.
  *
@@ -53,6 +54,7 @@ import org.proninyaroslav.libretorrent.core.model.session.TorrentSessionImpl;
 import org.proninyaroslav.libretorrent.core.model.stream.TorrentInputStream;
 import org.proninyaroslav.libretorrent.core.model.stream.TorrentStream;
 import org.proninyaroslav.libretorrent.core.model.stream.TorrentStreamServer;
+import org.proninyaroslav.libretorrent.core.model.webui.WebUiServer;
 import org.proninyaroslav.libretorrent.core.settings.SessionSettings;
 import org.proninyaroslav.libretorrent.core.settings.SettingsRepository;
 import org.proninyaroslav.libretorrent.core.storage.TorrentRepository;
@@ -98,6 +100,7 @@ public class TorrentEngine
     private Context appContext;
     private TorrentSession session;
     private TorrentStreamServer torrentStreamServer;
+    private WebUiServer webUiServer;
     private TorrentRepository repo;
     private SettingsRepository pref;
     private TorrentNotifier notifier;
@@ -1027,6 +1030,10 @@ public class TorrentEngine
         if (enableStreaming)
             startStreamingServer();
 
+        boolean enableWebUi = pref.enableWebUi();
+        if (enableWebUi)
+            startWebUiServer();
+
         loadTorrents();
     }
 
@@ -1052,6 +1059,30 @@ public class TorrentEngine
         if (torrentStreamServer != null)
             torrentStreamServer.stop();
         torrentStreamServer = null;
+    }
+
+    private void startWebUiServer()
+    {
+        stopWebUiServer();
+
+        String hostname = pref.webUiHostname();
+        int port = pref.webUiPort();
+
+        webUiServer = new WebUiServer(hostname, port);
+        try {
+            webUiServer.start(appContext);
+
+        } catch (IOException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+            notifier.makeErrorNotify(appContext.getString(R.string.pref_webui_error));
+        }
+    }
+
+    private void stopWebUiServer()
+    {
+        if (webUiServer != null)
+            webUiServer.stop();
+        webUiServer = null;
     }
 
     private void loadTorrents()
@@ -1596,6 +1627,16 @@ public class TorrentEngine
         } else if (key.equals(appContext.getString(R.string.pref_key_streaming_port)) ||
                 key.equals(appContext.getString(R.string.pref_key_streaming_hostname))) {
             startStreamingServer();
+
+        } else if (key.equals(appContext.getString(R.string.pref_key_webui_enable))) {
+            if (pref.enableWebUi())
+                startWebUiServer();
+            else
+                stopWebUiServer();
+
+        } else if (key.equals(appContext.getString(R.string.pref_key_webui_port)) ||
+                key.equals(appContext.getString(R.string.pref_key_webui_hostname))) {
+            startWebUiServer();
 
         } else if (key.equals(appContext.getString(R.string.pref_key_anonymous_mode))) {
             SessionSettings s = session.getSettings();

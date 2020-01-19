@@ -95,4 +95,9 @@
     <string name="pref_key_streaming_enable" translatable="false">pref_key_streaming_enable</string>
     <string name="pref_key_streaming_hostname" translatable="false">pref_key_streaming_hostname</string>
     <string name="pref_key_streaming_port" translatable="false">pref_key_streaming_port</string>
+
+    <!-- WebUi settings -->
+    <string name="pref_key_webui_enable" translatable="false">pref_key_webui_enable</string>
+    <string name="pref_key_webui_hostname" translatable="false">pref_key_webui_hostname</string>
+    <string name="pref_key_webui_port" translatable="false">pref_key_webui_port</string>
 </resources>

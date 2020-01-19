@@ -374,6 +374,7 @@
     <string name="pref_header_scheduling">Scheduling</string>
     <string name="pref_header_feed">RSS</string>
     <string name="pref_header_streaming">Streaming</string>
+    <string name="pref_header_web_ui">Web UI</string>
     <!-- Storage settings -->
     <string name="pref_save_torrents_in_title">Save torrents in</string>
     <string name="pref_move_after_download_title">Move after download</string>
@@ -534,6 +535,12 @@
     <string name="pref_streaming_hostname">Hostname</string>
     <string name="pref_streaming_port">Port</string>
     <string name="pref_streaming_error">Selected port or hostname for streaming is busy or incorrect. Please fix it</string>
+    <!-- WebUI settings -->
+    <string name="pref_webui_enable_title">Enable Web UI</string>
+    <string name="pref_webui_enable_summary">The Web user interface allows you access your application remote via web browser</string>
+    <string name="pref_webui_hostname">Hostname</string>
+    <string name="pref_webui_port">Port</string>
+    <string name="pref_webui_error">Selected port or hostname for Web UI is busy or incorrect. Please fix it</string>
 
     <!-- About dialog -->
     <string name="about_title">About LibreTorrent</string>
