@@ -24,7 +24,6 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 
 import org.proninyaroslav.libretorrent.core.exception.DecodeException;
-import org.proninyaroslav.libretorrent.core.model.ChangeableParams;
 import org.proninyaroslav.libretorrent.core.model.data.PeerInfo;
 import org.proninyaroslav.libretorrent.core.model.data.Priority;
 import org.proninyaroslav.libretorrent.core.model.data.TorrentStateCode;
@@ -59,7 +58,14 @@ public interface TorrentDownload
 
     boolean isAutoManaged();
 
+    /*
+     * A value in the range [0, 100], that represents the progress of the torrent's
+     * current task. It may be checking files or downloading
+     */
+
     int getProgress();
+
+    void prioritizeFiles(@NonNull Priority[] priorities);
 
     long getSize();
 
@@ -113,11 +119,17 @@ public interface TorrentDownload
 
     String makeMagnet(boolean includePriorities);
 
+    void setSequentialDownload(boolean sequential);
+
+    void setTorrentName(@NonNull String name);
+
     long getETA();
 
     TorrentMetaInfo getTorrentMetaInfo() throws DecodeException;
 
     String getTorrentName();
+
+    void setDownloadPath(@NonNull Uri path);
 
     long[] getFilesReceivedBytes();
 
@@ -172,8 +184,6 @@ public interface TorrentDownload
     void setInterestedPieces(@NonNull TorrentStream stream, int startPiece, int numPieces);
 
     TorrentStream getStream(int fileIndex);
-
-    void applyParams(@NonNull ChangeableParams params);
 
     boolean isValid();
 
