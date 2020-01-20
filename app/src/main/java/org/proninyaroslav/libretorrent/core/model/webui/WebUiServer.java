@@ -21,38 +21,16 @@ package org.proninyaroslav.libretorrent.core.model.webui;
 import android.content.Context;
 import android.util.Log;
 
-import org.nanohttpd.protocols.http.IHTTPSession;
-import org.nanohttpd.protocols.http.NanoHTTPD;
-import org.nanohttpd.protocols.http.response.Response;
+import org.nanohttpd.router.RouterNanoHTTPD;
 import org.proninyaroslav.libretorrent.core.model.TorrentEngine;
-import org.proninyaroslav.libretorrent.core.model.stream.TorrentInputStream;
-import org.proninyaroslav.libretorrent.core.model.stream.TorrentStream;
+import org.proninyaroslav.libretorrent.core.model.webui.api.ApiTorrentListHandler;
+import org.proninyaroslav.libretorrent.core.model.webui.api.ApiVersionHandler;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import androidx.annotation.NonNull;
 
-import static org.nanohttpd.protocols.http.response.Response.newFixedLengthResponse;
-import static org.nanohttpd.protocols.http.response.Status.BAD_REQUEST;
-import static org.nanohttpd.protocols.http.response.Status.FORBIDDEN;
-import static org.nanohttpd.protocols.http.response.Status.NOT_FOUND;
-import static org.nanohttpd.protocols.http.response.Status.NOT_MODIFIED;
-import static org.nanohttpd.protocols.http.response.Status.OK;
-import static org.nanohttpd.protocols.http.response.Status.PARTIAL_CONTENT;
-import static org.nanohttpd.protocols.http.response.Status.RANGE_NOT_SATISFIABLE;
 
-/*
- * The server that allows to stream selected file from a torrent and to which a specific address is assigned.
- * Supports partial content and DLNA (for some file formats)
- */
-
-public class WebUiServer extends NanoHTTPD
+public class WebUiServer extends RouterNanoHTTPD
 {
     @SuppressWarnings("unused")
     private static final String TAG = WebUiServer.class.getSimpleName();
@@ -67,11 +45,20 @@ public class WebUiServer extends NanoHTTPD
         super(host, port);
     }
 
+    @Override
+    public void addMappings() {
+
+        //api
+        addRoute("/api/version", ApiVersionHandler.class);
+        addRoute("/api/torrent/list", ApiTorrentListHandler.class, engine);
+    }
+
     public void start(@NonNull Context appContext) throws IOException
     {
         Log.i(TAG, "Start " + TAG);
 
         engine = TorrentEngine.getInstance(appContext);
+        addMappings();
 
         super.start();
     }
@@ -82,21 +69,5 @@ public class WebUiServer extends NanoHTTPD
         super.stop();
 
         Log.i(TAG, "Stop " + TAG);
-    }
-
-    @Override
-    public Response handle(IHTTPSession session)
-    {
-        String uri = session.getUri();
-        Response res = handleTorrent(session);
-
-        return res;
-    }
-
-    public Response handleTorrent(IHTTPSession httpSession)
-    {
-        String data = "hello world";
-        Response res = newFixedLengthResponse(data);
-        return res;
     }
 }

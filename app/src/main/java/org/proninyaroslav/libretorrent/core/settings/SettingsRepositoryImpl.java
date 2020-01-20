@@ -147,7 +147,7 @@ public class SettingsRepositoryImpl implements SettingsRepository
         static final int streamingPort = 8800;
         /* WebUi settings*/
         static final boolean enableWebUi = false;
-        static final String webUiHostname = "127.0.0.1";
+        static final String webUiHostname = "0.0.0.0";
         static final int webUiPort = 8055;
     }
 
